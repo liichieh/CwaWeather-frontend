@@ -15,15 +15,15 @@
 
     <style>
         :root {
-            /* 大地色基底 */
-            --ac-green: #F4F1E8;
-            --ac-bg-pattern: #E0D8C8;
+            /* 大地色 + 櫻花粉基底 */
+            --ac-green: #FCE9F2;
+            --ac-bg-pattern: #F3D9E4;
             --ac-cream: #FFFFFF;
-            --ac-yellow: #E4D6B5;
+            --ac-yellow: #F8E2B9;
             --ac-brown: #7A5C40;
             --ac-blue: #8B6B4A;
             --ac-dark: #5A5248;
-            --ac-card-border: #DDD2BF;
+            --ac-card-border: #E4D2BF;
 
             /* 庫洛魔法使 / Clow Card 風格輔助色 */
             --clow-gold: #D3A157;
@@ -41,34 +41,66 @@
         }
 
         body {
+            position: relative;
             font-family: 'Zen Maru Gothic', sans-serif;
-            background-color: #CFE7FF;
-            /* 天空＋雲＋淡紙紋，整體偏小櫻站在天空中的感覺 */
+            background-color: #FCDDE8;
+            /* 天空＋櫻花＋淡紙紋，整體偏小櫻粉色魔法背景 */
             background-image:
                 radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.95) 0, rgba(255, 255, 255, 0) 40%),
                 radial-gradient(circle at 80% 18%, rgba(255, 255, 255, 0.9) 0, rgba(255, 255, 255, 0) 40%),
                 radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.7) 0, rgba(255, 255, 255, 0) 40%),
-                linear-gradient(to bottom, #CFE7FF 0%, #F4F1E8 55%, #F4F1E8 100%),
+                linear-gradient(to bottom, #FAD5E7 0%, #FCE9F2 45%, #F4F1E8 100%),
                 repeating-linear-gradient(135deg,
                     transparent 0,
                     transparent 22px,
-                    rgba(255, 255, 255, 0.24) 22px,
-                    rgba(255, 255, 255, 0.24) 24px);
+                    rgba(255, 255, 255, 0.22) 22px,
+                    rgba(255, 255, 255, 0.22) 24px);
             min-height: 100vh;
             color: var(--ac-dark);
             overflow-x: hidden;
             padding-bottom: 24px;
         }
 
-        /* 頂部狀態列：像貼在天上的魔法便條 */
+        /* 整體星光與櫻花粒子 */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.8) 0, transparent 55%),
+                radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.9) 1px, transparent 2px),
+                radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.9) 1px, transparent 2px),
+                radial-gradient(circle at 70% 30%, rgba(255, 255, 255, 0.9) 1px, transparent 2px),
+                radial-gradient(circle at 90% 70%, rgba(255, 255, 255, 0.9) 1px, transparent 2px);
+            background-size: 100% 100%, 120px 120px, 160px 160px, 140px 140px, 180px 180px;
+            opacity: 0.4;
+            mix-blend-mode: screen;
+            animation: twinkle 6s ease-in-out infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0.25;
+                transform: translateY(0);
+            }
+
+            100% {
+                opacity: 0.55;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* 頂部狀態列：像貼在天空上的魔法手帳標籤 */
         .status-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.86);
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.8);
             border-radius: 0 0 18px 18px;
             box-shadow:
                 0 3px 10px rgba(0, 0, 0, 0.05),
@@ -80,7 +112,7 @@
 
         .status-bar::before,
         .status-bar::after {
-            /* 小小翅膀裝飾 */
+            /* 小翅膀裝飾 */
             content: "";
             position: absolute;
             top: 50%;
@@ -102,7 +134,7 @@
             transform: translateY(-95%) rotate(18deg);
         }
 
-        /* 地點 pill：灰色無印＋一點卡通感 */
+        /* 地點 pill：灰色無印＋一點卡通邊線 */
         .location-pill {
             background: #E3E1DD;
             color: #5A5248;
@@ -132,10 +164,36 @@
             letter-spacing: 0.08em;
         }
 
+        /* 主內容：魔法手帳的頁面 */
         .container {
+            position: relative;
             padding: 20px 18px;
             max-width: 600px;
             margin: 0 auto;
+        }
+
+        .container::before {
+            /* 左側手帳裝訂孔 */
+            content: "";
+            position: absolute;
+            top: 16px;
+            bottom: 16px;
+            left: 2px;
+            width: 12px;
+            background: radial-gradient(circle at center, #FDF9F3 0, #FDF9F3 45%, transparent 46%) repeat-y;
+            background-size: 10px 32px;
+            opacity: 0.8;
+        }
+
+        .container::after {
+            /* 手帳外框陰影 */
+            content: "";
+            position: absolute;
+            inset: 10px 6px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+            pointer-events: none;
         }
 
         /* === 今日焦點卡片：Clow Card 風格雙層金框 === */
@@ -215,11 +273,42 @@
         }
 
         .hero-temp-container {
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
             margin: 26px 0 18px;
+        }
+
+        /* Hero 周圍的翅膀 */
+        .hero-temp-container::before,
+        .hero-temp-container::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 56px;
+            height: 26px;
+            border-radius: 26px 26px 6px 6px;
+            background:
+                radial-gradient(circle at 10% 50%, #FFFFFF 0, #FFFFFF 40%, transparent 41%),
+                radial-gradient(circle at 40% 50%, #FFFFFF 0, #FFFFFF 40%, transparent 41%),
+                radial-gradient(circle at 70% 50%, #FFFFFF 0, #FFFFFF 40%, transparent 41%);
+            background-repeat: no-repeat;
+            background-size: 16px 20px;
+            background-position: 0 4px, 18px 2px, 36px 4px;
+            box-shadow: 0 2px 4px rgba(255, 255, 255, 0.9);
+            opacity: 0.9;
+        }
+
+        .hero-temp-container::before {
+            right: calc(50% + 70px);
+            transform: translateY(-50%) rotate(10deg);
+        }
+
+        .hero-temp-container::after {
+            left: calc(50% + 70px);
+            transform: translateY(-50%) scaleX(-1) rotate(10deg);
         }
 
         .hero-icon {
@@ -313,7 +402,7 @@
             letter-spacing: 0.04em;
         }
 
-        /* === 稍後預報：Clow Card 縮小版 === */
+        /* === 稍後預報：魔法卡牌列 === */
         .section-title {
             font-size: 1.1rem;
             color: var(--ac-brown);
@@ -410,14 +499,14 @@
             color: var(--ac-dark);
         }
 
-        /* Loading 畫面：天空＋魔法陣 */
+        /* Loading 畫面：天空＋魔法陣＋羽毛 */
         .loading-screen {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(to bottom, #CFE7FF 0%, #F4F1E8 100%);
+            background: linear-gradient(to bottom, #FAD5E7 0%, #FCE9F2 50%, #F4F1E8 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -445,6 +534,7 @@
         }
 
         .loading-screen::after {
+            /* 中央星星 */
             content: "✶";
             position: absolute;
             font-size: 2.2rem;
@@ -452,6 +542,14 @@
             text-shadow:
                 0 0 8px rgba(255, 255, 255, 0.95),
                 0 0 16px rgba(211, 161, 87, 0.8);
+        }
+
+        .loading-screen p {
+            color: var(--ac-brown) !important;
+            letter-spacing: 0.08em;
+            margin-top: 20px;
+            font-weight: 700;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
         }
 
         @keyframes spin-circle {
@@ -462,14 +560,6 @@
             to {
                 transform: rotate(360deg);
             }
-        }
-
-        .loading-screen p {
-            color: var(--ac-brown) !important;
-            letter-spacing: 0.08em;
-            margin-top: 20px;
-            font-weight: 700;
-            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
         }
 
         /* RWD 微調：寬螢幕時稍微放大整體呈現 */
@@ -670,4 +760,6 @@
 
         document.addEventListener("DOMContentLoaded", fetchWeather);
     </script>
-</body
+</body>
+
+</html>
